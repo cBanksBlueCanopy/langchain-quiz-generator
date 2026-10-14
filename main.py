@@ -20,7 +20,7 @@ number_of_questions = input("How many questions? ")
 
 
 ## Questions
-question_template = PromptTemplate.from_template(f"For a {grade_level} grade level {course} course, create a {number_of_questions} question multiple choice exam.")
+question_template = PromptTemplate.from_template("For a {grade_level} grade level {course} course, create a {number_of_questions} question multiple choice exam.")
 questions_chain = question_template | model | StrOutputParser()
 generated_questions = questions_chain.invoke({
     "grade_level": grade_level,
@@ -30,9 +30,9 @@ generated_questions = questions_chain.invoke({
 
 
 ## Detailed answers
-answer_template = PromptTemplate.from_template(f"Create explanataions for the following questions {generated_questions}, all explanations should be formatted in a manner that a student that is currently in the grade {grade_level} would be able to understand.  Also include the original question above the explanation.")
+answer_template = PromptTemplate.from_template("Create explanataions for the following questions {generated_questions}, all explanations should be formatted in a manner that a student that is currently in the grade {grade_level} would be able to understand.  Also include the original question above the explanation.")
 answer_chain = answer_template | model | StrOutputParser()
-generated_answers = answer_template.invoke({
+generated_answers = answer_chain.invoke({
     "generated_questions": generated_questions,
     "grade_level": grade_level
 })
